@@ -10,14 +10,13 @@ defmodule Reversi.Game do
   end
 
   def init(uuid: uuid) do
-    Reversi.NameResolver.register(uuid, self)
+    NameResolver.register(uuid, self)
 
     {:ok, %__MODULE__{uuid: uuid}}
   end
 
   def put(uuid, color, col, row) do
-    NameResolver.whereis(uuid)
-    |> GenServer.cast {:put, color, col, row}
+    NameResolver.whereis(uuid) |> GenServer.cast {:put, color, col, row}
   end
 
   def handle_cast({:put, color, col, row}, state) do
