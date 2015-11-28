@@ -2,8 +2,9 @@ defmodule Reversi.Game do
   use GenServer
 
   alias Reversi.NameResolver
+  alias Reversi.Board
 
-  defstruct [:uuid]
+  defstruct [uuid: nil, board: Board.new]
 
   def start_link(args) do
     GenServer.start_link(__MODULE__, args)
