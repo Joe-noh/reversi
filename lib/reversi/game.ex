@@ -17,12 +17,23 @@ defmodule Reversi.Game do
   end
 
   def put(uuid, color, col, row) do
-    NameResolver.whereis(uuid) |> GenServer.cast {:put, color, col, row}
+    NameResolver.whereis(uuid)
+    |> GenServer.cast({:put, color, col, row})
+  end
+
+  def display_board(uuid) do
+    NameResolver.whereis(uuid)
+    |> GenServer.call(:to_string)
+    |> IO.puts
   end
 
   def handle_cast({:put, color, col, row}, state) do
     IO.inspect "a chip is put"
 
     {:noreply, state}
+  end
+
+  def handle_call(:to_string, _from, state) do
+    Enum.state.board
   end
 end
