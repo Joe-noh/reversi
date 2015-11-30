@@ -15,7 +15,8 @@ defmodule Reversi.Board do
 
   def coords(col, row), do: {col, row}
 
-  def put(board, coords, color) when tuple_size(coords) == 2 and color in [:black, :white] do
+  def put(board, coords = {col, row}, color)
+  when col in @cols and row in @rows and color in [:black, :white] do
     new_mapping = Map.put(board.mapping, coords, color)
     %__MODULE__{board | mapping: new_mapping}
   end
