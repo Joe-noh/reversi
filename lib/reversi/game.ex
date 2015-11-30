@@ -4,7 +4,7 @@ defmodule Reversi.Game do
   alias Reversi.NameResolver
   alias Reversi.Board
 
-  defstruct [uuid: nil, board: Board.new, next_color: :black]
+  defstruct [uuid: nil, board: Board.new, current_color: :black]
 
   def start_link(args) do
     GenServer.start_link(__MODULE__, args)
@@ -21,19 +21,28 @@ defmodule Reversi.Game do
     |> GenServer.call({:put, col, row, color})
   end
 
+  def current_color(uuid) do
+    NameResolver.whereis(uuid)
+    |> GenServer.call(:current_color)
+  end
+
   def display_board(uuid) do
     NameResolver.whereis(uuid)
     |> GenServer.call(:to_string)
     |> IO.puts
   end
 
-  def handle_call({:put, col, row, color}, _from, state = %{next_color: color}) do
+  def handle_call({:put, col, row, color}, _from, state = %{current_color: color}) do
     new_board = Board.put(state.board, Board.coords(col, row), color)
-    {:reply, :ok, %__MODULE__{state | board: new_board, next_color: next_color(color)}}
+    {:reply, :ok, %__MODULE__{state | board: new_board, current_color: next_color(color)}}
   end
 
   def handle_call({:put, col, row, color}, _from, state) do
     {:reply, {:error, "not your turn"}, state}
+  end
+
+  def handle_call(:current_color, _from, %{current_color: color} = state) do
+    {:reply, color, state}
   end
 
   def handle_call(:to_string, _from, state) do
