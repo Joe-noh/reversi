@@ -5,6 +5,9 @@ defmodule Reversi.Board do
   @cols ~w[a b c d e f g h]
   @rows ~w[1 2 3 4 5 6 7 8]
 
+  @cols_map @cols |> Enum.with_index |> Enum.into %{}
+  @rows_map @rows |> Enum.with_index |> Enum.into %{}
+
   def new do
     mapping = for col <- @cols, row <- @rows, into: %{} do
       {coords(col, row), :empty}
@@ -17,10 +20,11 @@ defmodule Reversi.Board do
     |> put(coords("e", "4"), :white)
   end
 
-  def coords(col, row), do: {col, row}
+  def coords(col, row) when col in @cols and row in @rows do
+    {Map.get(@cols_map, col), Map.get(@rows_map, row)}
+  end
 
-  def put(board, coords = {col, row}, color)
-  when col in @cols and row in @rows and color in [:black, :white] do
+  def put(board, coords, color) when color in [:black, :white] do
     new_mapping = Map.put(board.mapping, coords, color)
     %__MODULE__{board | mapping: new_mapping}
   end
