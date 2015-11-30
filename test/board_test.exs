@@ -7,9 +7,14 @@ defmodule BoardTest do
     {:ok, board: Board.new}
   end
 
-  test "new/0 returns empty board", %{board: board} do
-    Enum.each board.mapping, fn {coords, _} ->
-      assert Board.empty?(board, coords)
+  test "new/0 returns initialized board", %{board: board} do
+    init_black = [Board.coords("d", "4"), Board.coords("e", "5")]
+    init_white = [Board.coords("d", "5"), Board.coords("e", "4")]
+
+    Enum.each board.mapping, fn
+      {coords, :black} -> assert coords in init_black
+      {coords, :white} -> assert coords in init_white
+      {coords, _color} -> assert Board.empty?(board, coords)
     end
   end
 
@@ -31,8 +36,8 @@ defmodule BoardTest do
       "1                 ",
       "2                 ",
       "3                 ",
-      "4                 ",
-      "5                 ",
+      "4       ●○      ",
+      "5       ○●      ",
       "6                 ",
       "7                 ",
       "8                 "
@@ -48,8 +53,8 @@ defmodule BoardTest do
       "1     ○          ",
       "2                 ",
       "3                 ",
-      "4                 ",
-      "5                 ",
+      "4       ●○      ",
+      "5       ○●      ",
       "6                 ",
       "7                 ",
       "8   ●            "

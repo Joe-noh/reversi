@@ -11,6 +11,10 @@ defmodule Reversi.Board do
     end
 
     %__MODULE__{mapping: mapping}
+    |> put(coords("d", "4"), :black)
+    |> put(coords("e", "5"), :black)
+    |> put(coords("d", "5"), :white)
+    |> put(coords("e", "4"), :white)
   end
 
   def coords(col, row), do: {col, row}
