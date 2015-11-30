@@ -4,7 +4,7 @@ defmodule Reversi.Game do
   alias Reversi.NameResolver
   alias Reversi.Board
 
-  defstruct [uuid: nil, board: Board.new]
+  defstruct [uuid: nil, board: Board.new, next_color: :black]
 
   def start_link(args) do
     GenServer.start_link(__MODULE__, args)
@@ -16,9 +16,9 @@ defmodule Reversi.Game do
     {:ok, %__MODULE__{uuid: uuid}}
   end
 
-  def put(uuid, color, col, row) do
+  def put(uuid, col, row, color) do
     NameResolver.whereis(uuid)
-    |> GenServer.cast({:put, color, col, row})
+    |> GenServer.call({:put, col, row, color})
   end
 
   def display_board(uuid) do
@@ -27,13 +27,19 @@ defmodule Reversi.Game do
     |> IO.puts
   end
 
-  def handle_cast({:put, color, col, row}, state) do
-    IO.inspect "a chip is put"
+  def handle_call({:put, col, row, color}, _from, state = %{next_color: color}) do
+    new_board = Board.put(state.board, Board.coords(col, row), color)
+    {:reply, :ok, %__MODULE__{state | board: new_board, next_color: next_color(color)}}
+  end
 
-    {:noreply, state}
+  def handle_call({:put, col, row, color}, _from, state) do
+    {:reply, {:error, "not your turn"}, state}
   end
 
   def handle_call(:to_string, _from, state) do
     Enum.state.board
   end
+
+  defp next_color(:white), do: :black
+  defp next_color(:black), do: :white
 end
