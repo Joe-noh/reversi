@@ -46,7 +46,7 @@ defmodule Reversi.Game do
   end
 
   def handle_call(:to_string, _from, state) do
-    Enum.state.board
+    {:reply, Board.to_string(state.board), state}
   end
 
   defp next_color(:white), do: :black
