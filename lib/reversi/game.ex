@@ -37,7 +37,7 @@ defmodule Reversi.Game do
     {:reply, :ok, %__MODULE__{state | board: new_board, current_color: next_color(color)}}
   end
 
-  def handle_call({:put, col, row, color}, _from, state) do
+  def handle_call({:put, _col, _row, _color}, _from, state) do
     {:reply, {:error, "not your turn"}, state}
   end
 
