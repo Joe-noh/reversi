@@ -30,8 +30,8 @@ defmodule BoardTest do
     assert_raise FunctionClauseError, fn -> Board.put(board, coords, :another) end
   end
 
-  test "to_string/1", %{board: board} do
-    expected = Enum.join [
+  test "integration", %{board: board} do
+    assert Board.to_string(board) == Enum.join [
       "   a b c d e f g h",
       "1                 ",
       "2                 ",
@@ -43,23 +43,88 @@ defmodule BoardTest do
       "8                 "
     ], "\n"
 
-    assert Board.to_string(board) == expected
-
     board = board
-      |> Board.put(Board.coords("c", "1"), :white)
-      |> Board.put(Board.coords("b", "8"), :black)
-    expected = Enum.join [
+      |> Board.put(Board.coords("d", "3"), :white)
+      |> Board.put(Board.coords("c", "5"), :black)
+
+    assert Board.to_string(board) == Enum.join [
       "   a b c d e f g h",
-      "1     ○          ",
+      "1                 ",
       "2                 ",
-      "3                 ",
-      "4       ●○      ",
-      "5       ○●      ",
+      "3       ○        ",
+      "4       ○○      ",
+      "5     ●●●      ",
       "6                 ",
       "7                 ",
-      "8   ●            "
+      "8                 "
     ], "\n"
 
-    assert Board.to_string(board) == expected
+    board = board
+      |> Board.put(Board.coords("e", "6"), :white)
+      |> Board.put(Board.coords("f", "5"), :black)
+
+    assert Board.to_string(board) == Enum.join [
+      "   a b c d e f g h",
+      "1                 ",
+      "2                 ",
+      "3       ○        ",
+      "4       ○○      ",
+      "5     ●●●●    ",
+      "6         ○      ",
+      "7                 ",
+      "8                 "
+    ], "\n"
+
+    board = board
+      |> Board.put(Board.coords("c", "6"), :white)
+      |> Board.put(Board.coords("e", "3"), :black)
+
+    assert Board.to_string(board) == Enum.join [
+      "   a b c d e f g h",
+      "1                 ",
+      "2                 ",
+      "3       ○●      ",
+      "4       ●●      ",
+      "5     ●○●●    ",
+      "6     ○  ○      ",
+      "7                 ",
+      "8                 "
+    ], "\n"
+
+    board = board
+      |> Board.put(Board.coords("g", "5"), :white)
+      |> Board.put(Board.coords("h", "5"), :black)
+
+    assert Board.to_string(board) == Enum.join [
+      "   a b c d e f g h",
+      "1                 ",
+      "2                 ",
+      "3       ○●      ",
+      "4       ●●      ",
+      "5     ●●●●●●",
+      "6     ○  ○      ",
+      "7                 ",
+      "8                 "
+    ], "\n"
+
+    board = board
+      |> Board.put(Board.coords("c", "4"), :white)
+      |> Board.put(Board.coords("d", "6"), :black)
+      |> Board.put(Board.coords("f", "3"), :white)
+      |> Board.put(Board.coords("f", "4"), :black)
+      |> Board.put(Board.coords("d", "7"), :white)
+      |> Board.put(Board.coords("d", "8"), :black)
+
+    assert Board.to_string(board) == Enum.join [
+      "   a b c d e f g h",
+      "1                 ",
+      "2                 ",
+      "3       ○○○    ",
+      "4     ○●●●    ",
+      "5     ○●●●●●",
+      "6     ○●○      ",
+      "7       ●        ",
+      "8       ●        "
+    ], "\n"
   end
 end
