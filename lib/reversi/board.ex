@@ -27,6 +27,13 @@ defmodule Reversi.Board do
   end
 
   def put(board, coords, color) when color in [:black, :white] do
+    case get(board, coords) do
+      :empty -> do_put(board, coords, color)
+      _ -> {:error, "you can't put there"}
+    end
+  end
+
+  defp do_put(board, coords, color) do
     map_after_putting = Map.put(board.map, coords, color)
 
     map_after_flipping = Enum.reduce @directions, map_after_putting, fn direction, acc_map ->
