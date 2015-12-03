@@ -16,6 +16,9 @@ defmodule Reversi.Game do
     {:ok, %__MODULE__{uuid: uuid}}
   end
 
+  def put(uuid, col, row, "○"), do: put(uuid, col, row, :white)
+  def put(uuid, col, row, "×"), do: put(uuid, col, row, :black)
+
   def put(uuid, col, row, color) do
     NameResolver.whereis(uuid)
     |> GenServer.call({:put, col, row, color})

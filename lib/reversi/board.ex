@@ -101,7 +101,7 @@ defmodule Reversi.Board do
     Enum.reduce @rows, header, fn row, lines ->
       line = Enum.reduce @cols, "", fn col, acc ->
         case get(board, coords(col, row)) do
-          :black -> acc <> "●"
+          :black -> acc <> "×"
           :white -> acc <> "○"
           :empty -> acc <> "  "
         end
