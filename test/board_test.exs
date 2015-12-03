@@ -24,6 +24,13 @@ defmodule BoardTest do
     assert Board.put(board, coords, :white) |> Board.get(coords) == :white
   end
 
+  test "put/3 forbidden putting a disk on a disk", %{board: board} do
+    coords = Board.coords("d", "4")
+
+    assert Board.get(board, coords) != :empty
+    assert {:error, _} = Board.put(board, coords, :black)
+  end
+
   test "put/3 accepts only :white or :black", %{board: board} do
     coords = Board.coords("a", "1")
 
