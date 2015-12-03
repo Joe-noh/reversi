@@ -1,6 +1,6 @@
 defmodule Reversi.Board do
 
-  defstruct mapping: %{}
+  defstruct map: %{}
 
   @cols ~w[a b c d e f g h]
   @rows ~w[1 2 3 4 5 6 7 8]
@@ -11,11 +11,11 @@ defmodule Reversi.Board do
   @directions ~w[n e s w ne se sw nw]a
 
   def new do
-    mapping = for col <- @cols, row <- @rows, into: %{} do
+    map = for col <- @cols, row <- @rows, into: %{} do
       {coords(col, row), :empty}
     end
 
-    %__MODULE__{mapping: mapping}
+    %__MODULE__{map: map}
     |> put(coords("d", "4"), :black)
     |> put(coords("e", "5"), :black)
     |> put(coords("d", "5"), :white)
@@ -27,7 +27,7 @@ defmodule Reversi.Board do
   end
 
   def put(board, coords, color) when color in [:black, :white] do
-    map_after_putting = Map.put(board.mapping, coords, color)
+    map_after_putting = Map.put(board.map, coords, color)
 
     map_after_flipping = Enum.reduce @directions, map_after_putting, fn direction, acc_map ->
       coords_list = coords |> coords_list(direction)
@@ -43,7 +43,7 @@ defmodule Reversi.Board do
       end
     end
 
-    %__MODULE__{mapping: map_after_flipping}
+    %__MODULE__{map: map_after_flipping}
   end
 
   defp judge_flip(disks_line = [head | _]) when head in [:black, :white] do
@@ -89,7 +89,7 @@ defmodule Reversi.Board do
   end
 
   def get(board, coords) do
-    Map.get(board.mapping, coords)
+    Map.get(board.map, coords)
   end
 
   def empty?(board, coords) do
