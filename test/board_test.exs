@@ -11,7 +11,7 @@ defmodule BoardTest do
     init_black = [Board.coords("d", "4"), Board.coords("e", "5")]
     init_white = [Board.coords("d", "5"), Board.coords("e", "4")]
 
-    Enum.each board.mapping, fn
+    Enum.each board.map, fn
       {coords, :black} -> assert coords in init_black
       {coords, :white} -> assert coords in init_white
       {coords, _color} -> assert Board.empty?(board, coords)
