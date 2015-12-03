@@ -24,4 +24,9 @@ defmodule GameTest do
 
     assert Game.current_color(game_id) == :white
   end
+
+  test "put accepts the string", %{game_id: game_id} do
+    assert Game.put(game_id, "c", "5", "×")
+    assert Game.put(game_id, "c", "5", "○")
+  end
 end
