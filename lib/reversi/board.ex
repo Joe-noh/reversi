@@ -16,10 +16,10 @@ defmodule Reversi.Board do
     end
 
     %__MODULE__{map: map}
-    |> put(coords("d", "4"), :black)
-    |> put(coords("e", "5"), :black)
-    |> put(coords("d", "5"), :white)
-    |> put(coords("e", "4"), :white)
+    |> put(coords("d", "4"), :white)
+    |> put(coords("e", "5"), :white)
+    |> put(coords("d", "5"), :black)
+    |> put(coords("e", "4"), :black)
   end
 
   def coords(col, row) when col in @cols and row in @rows do
@@ -133,7 +133,7 @@ defmodule Reversi.Board do
 
   defp do_coords_list(coords = {col, row}, col_diff, row_diff, acc) do
     next_coords = {col+col_diff, row+row_diff}
-    if out_of_board?(coords) do
+    if out_of_board?(next_coords) do
       Enum.reverse [coords | acc]
     else
       do_coords_list(next_coords, col_diff, row_diff, [coords | acc])
