@@ -133,7 +133,7 @@ defmodule Reversi.Board do
 
   defp do_coords_list(coords = {col, row}, col_diff, row_diff, acc) do
     next_coords = {col+col_diff, row+row_diff}
-    if out_of_board?(coords) do
+    if out_of_board?(next_coords) do
       Enum.reverse [coords | acc]
     else
       do_coords_list(next_coords, col_diff, row_diff, [coords | acc])
