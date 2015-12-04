@@ -54,45 +54,43 @@ defmodule Reversi.Board do
   end
 
   defp judge_flip(disks_line = [head | _]) when head in [:black, :white] do
-    {disks, after_empty} = Enum.split_while(disks_line, &(&1 != :empty))
-
-    do_judge_flip(disks) ++ (for _ <- after_empty, do: false)
+    do_judge_flip(disks_line)
   end
 
-  defp do_judge_flip([_]) do
-    [false]
-  end
-
-  defp do_judge_flip([_, _]) do
-    [false, false]
-  end
-
-  defp do_judge_flip([a, b, a | _]) when a != b do
-    [false, true, false]
-  end
-
-  defp do_judge_flip([a, b, b, a | _]) when a != b do
-    [false, true, true, false]
-  end
-
-  defp do_judge_flip([a, b, b, b, a | _]) when a != b do
-    [false, true, true, true, false]
-  end
-
-  defp do_judge_flip([a, b, b, b, b, a | _]) when a != b do
-    [false, true, true, true, true, false]
-  end
-
-  defp do_judge_flip([a, b, b, b, b, b, a | _]) when a != b do
-    [false, true, true, true, true, true, false]
-  end
-
-  defp do_judge_flip([a, b, b, b, b, b, b, a]) when a != b do
+  defp do_judge_flip([a, b, b, b, b, b, b, a]) when not b in [a, :empty] do
     [false, true, true, true, true, true, true, false]
   end
 
+  defp do_judge_flip([a, b, b, b, b, b, a | rest]) when not b in [a, :empty] do
+    [false, true, true, true, true, true, false | falses(rest)]
+  end
+
+  defp do_judge_flip([a, b, b, b, b, a | rest]) when not b in [a, :empty] do
+    [false, true, true, true, true, false | falses(rest)]
+  end
+
+  defp do_judge_flip([a, b, b, b, a | rest]) when not b in [a, :empty] do
+    [false, true, true, true, false | falses(rest)]
+  end
+
+  defp do_judge_flip([a, b, b, a | rest]) when not b in [a, :empty] do
+    [false, true, true, false | falses(rest)]
+  end
+
+  defp do_judge_flip([a, b, a | rest]) when not b in [a, :empty] do
+    [false, true, false | falses(rest)]
+  end
+
   defp do_judge_flip(disks) do
-    for _ <- disks, do: false
+    falses(disks)
+  end
+
+  defp falses(list) when is_list(list) do
+    length(list) |> falses
+  end
+
+  defp falses(length) do
+    List.duplicate(false, length)
   end
 
   def get(board, coords) do
