@@ -8,8 +8,8 @@ defmodule BoardTest do
   end
 
   test "new/0 returns initialized board", %{board: board} do
-    init_black = [Board.coords("d", "4"), Board.coords("e", "5")]
-    init_white = [Board.coords("d", "5"), Board.coords("e", "4")]
+    init_black = [Board.coords("d", "5"), Board.coords("e", "4")]
+    init_white = [Board.coords("d", "4"), Board.coords("e", "5")]
 
     Enum.each board.map, fn
       {coords, :black} -> assert coords in init_black
@@ -43,95 +43,95 @@ defmodule BoardTest do
       "1                 ",
       "2                 ",
       "3                 ",
-      "4       ×○      ",
-      "5       ○×      ",
+      "4       ○×      ",
+      "5       ×○      ",
       "6                 ",
       "7                 ",
       "8                 "
     ], "\n"
 
     board = board
-      |> Board.put(Board.coords("d", "3"), :white)
-      |> Board.put(Board.coords("c", "5"), :black)
+      |> Board.put(Board.coords("d", "3"), :black)
+      |> Board.put(Board.coords("c", "5"), :white)
 
     assert Board.to_string(board) == Enum.join [
       "   a b c d e f g h",
       "1                 ",
       "2                 ",
-      "3       ○        ",
-      "4       ○○      ",
-      "5     ×××      ",
+      "3       ×        ",
+      "4       ××      ",
+      "5     ○○○      ",
       "6                 ",
       "7                 ",
       "8                 "
     ], "\n"
 
     board = board
-      |> Board.put(Board.coords("e", "6"), :white)
-      |> Board.put(Board.coords("f", "5"), :black)
+      |> Board.put(Board.coords("e", "6"), :black)
+      |> Board.put(Board.coords("f", "5"), :white)
 
     assert Board.to_string(board) == Enum.join [
       "   a b c d e f g h",
       "1                 ",
       "2                 ",
-      "3       ○        ",
+      "3       ×        ",
+      "4       ××      ",
+      "5     ○○○○    ",
+      "6         ×      ",
+      "7                 ",
+      "8                 "
+    ], "\n"
+
+    board = board
+      |> Board.put(Board.coords("c", "6"), :black)
+      |> Board.put(Board.coords("e", "3"), :white)
+
+    assert Board.to_string(board) == Enum.join [
+      "   a b c d e f g h",
+      "1                 ",
+      "2                 ",
+      "3       ×○      ",
       "4       ○○      ",
-      "5     ××××    ",
-      "6         ○      ",
+      "5     ○×○○    ",
+      "6     ×  ×      ",
       "7                 ",
       "8                 "
     ], "\n"
 
     board = board
-      |> Board.put(Board.coords("c", "6"), :white)
-      |> Board.put(Board.coords("e", "3"), :black)
+      |> Board.put(Board.coords("g", "5"), :black)
+      |> Board.put(Board.coords("h", "5"), :white)
 
     assert Board.to_string(board) == Enum.join [
       "   a b c d e f g h",
       "1                 ",
       "2                 ",
-      "3       ○×      ",
-      "4       ××      ",
-      "5     ×○××    ",
-      "6     ○  ○      ",
+      "3       ×○      ",
+      "4       ○○      ",
+      "5     ○○○○○○",
+      "6     ×  ×      ",
       "7                 ",
       "8                 "
     ], "\n"
 
     board = board
-      |> Board.put(Board.coords("g", "5"), :white)
-      |> Board.put(Board.coords("h", "5"), :black)
-
-    assert Board.to_string(board) == Enum.join [
-      "   a b c d e f g h",
-      "1                 ",
-      "2                 ",
-      "3       ○×      ",
-      "4       ××      ",
-      "5     ××××××",
-      "6     ○  ○      ",
-      "7                 ",
-      "8                 "
-    ], "\n"
-
-    board = board
-      |> Board.put(Board.coords("c", "4"), :white)
+      |> Board.put(Board.coords("c", "4"), :black)
+      |> Board.put(Board.coords("e", "7"), :white)
+      |> Board.put(Board.coords("f", "3"), :black)
+      |> Board.put(Board.coords("b", "5"), :white)
       |> Board.put(Board.coords("d", "6"), :black)
-      |> Board.put(Board.coords("f", "3"), :white)
-      |> Board.put(Board.coords("f", "4"), :black)
-      |> Board.put(Board.coords("d", "7"), :white)
-      |> Board.put(Board.coords("d", "8"), :black)
+      |> Board.put(Board.coords("c", "3"), :white)
 
     assert Board.to_string(board) == Enum.join [
       "   a b c d e f g h",
       "1                 ",
       "2                 ",
-      "3       ○○○    ",
-      "4     ○×××    ",
-      "5     ○×××××",
-      "6     ○×○      ",
-      "7       ×        ",
-      "8       ×        "
+      "3     ○×××    ",
+      "4     ○○×      ",
+      "5   ○○×○○○○",
+      "6     ××○      ",
+      "7         ○      ",
+      "8                 "
     ], "\n"
   end
 end

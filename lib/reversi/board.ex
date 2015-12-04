@@ -16,10 +16,10 @@ defmodule Reversi.Board do
     end
 
     %__MODULE__{map: map}
-    |> put(coords("d", "4"), :black)
-    |> put(coords("e", "5"), :black)
-    |> put(coords("d", "5"), :white)
-    |> put(coords("e", "4"), :white)
+    |> put(coords("d", "4"), :white)
+    |> put(coords("e", "5"), :white)
+    |> put(coords("d", "5"), :black)
+    |> put(coords("e", "4"), :black)
   end
 
   def coords(col, row) when col in @cols and row in @rows do
