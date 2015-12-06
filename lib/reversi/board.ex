@@ -10,6 +10,10 @@ defmodule Reversi.Board do
 
   @directions ~w[n e s w ne se sw nw]a
 
+  @type t :: %__MODULE__{}
+  @type coords :: {String.t, String.t}
+
+  @spec new :: t
   def new do
     map = for col <- @cols, row <- @rows, into: %{} do
       {coords(col, row), :empty}
@@ -22,10 +26,12 @@ defmodule Reversi.Board do
     |> put(coords("e", "4"), :black)
   end
 
+  @spec coords(String.t, String.t) :: coords
   def coords(col, row) when col in @cols and row in @rows do
     {Map.get(@cols_map, col), Map.get(@rows_map, row)}
   end
 
+  @spec put(t, coords, :black | :white) :: t | {:error, String.t}
   def put(board, coords, color) when color in [:black, :white] do
     case get(board, coords) do
       :empty -> do_put(board, coords, color)
@@ -33,6 +39,7 @@ defmodule Reversi.Board do
     end
   end
 
+  @spec do_put(t, coords, atom) :: t
   defp do_put(board, coords, color) do
     map_after_putting = Map.put(board.map, coords, color)
 
@@ -53,10 +60,12 @@ defmodule Reversi.Board do
     %__MODULE__{map: map_after_flipping}
   end
 
+  @spec judge_flip([:black | :white | :empty, ...]) :: [boolean]
   defp judge_flip(disks_line = [head | _]) when head in [:black, :white] do
     do_judge_flip(disks_line)
   end
 
+  @spec do_judge_flip([:black | :white | :empty, ...]) :: [boolean]
   defp do_judge_flip([a, b, b, b, b, b, b, a]) when not b in [a, :empty] do
     [false, true, true, true, true, true, true, false]
   end
