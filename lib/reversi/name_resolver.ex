@@ -11,10 +11,12 @@ defmodule Reversi.NameResolver do
     {:ok, %{}}
   end
 
+  @spec register(String.t, pid) :: :ok
   def register(name, pid) do
     GenServer.cast(@name, {:register, name, pid})
   end
 
+  @spec whereis(String.t) :: :ok
   def whereis(name) do
     GenServer.call(@name, {:whereis, name})
   end
