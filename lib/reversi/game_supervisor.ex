@@ -18,17 +18,9 @@ defmodule Reversi.GameSup do
 
   @spec start_game :: String.t
   def start_game do
-    uuid = generate_uuid
+    uuid = Reversi.UUID.get
     Supervisor.start_child(@name, [[uuid: uuid]])
 
     uuid
-  end
-
-  @doc """
-  TODO: guarantee uniqueness
-  """
-  @spec generate_uuid :: String.t
-  defp generate_uuid do
-    ?a..?z |> Enum.take_random(10) |> List.to_string
   end
 end
